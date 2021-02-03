@@ -1,4 +1,4 @@
-// Package no_prefix is a subpackage of cmdiag which is intended to imported
+// Package no_prefix is a subpackage of cldiag which is intended to imported
 // without a prefix, like so:
 //	import . "github.com/c12h/command-line-utils/cldiag/cldiag_no_prefix"
 //
