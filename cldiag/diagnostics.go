@@ -1,3 +1,5 @@
+// Package cldiag reports warnings, fatal errors, etc for command-line programs.
+//
 // This package writes error messages in the conventional format
 //	<Program-Name>: <Sprintf-output><newline>
 // or the slightly less conventional format
@@ -27,14 +29,16 @@
 //   There are some special cases:
 //	- WarnIf[2](err, "") is equivalent to WarnIf[2](err, "%s", err)
 //	- DieIf[2](err, "")  is equivalent to DieIf[2](err, "%s", err)
-//	- Die("") and Die2(tag, "") call os.Exit() without outputting any message.
+//	- Die("") calls os.Exit() without outputting any message.
 //   This package provides three levels of diagnostic:
 //	- the WriteMessage[2] functions are for informational messages
 //	- the Warn[If][2] functions count how many warnings are output
 //	- the Die[If][2] functions call os.Exit()
 //
-// When calling os.Exit(), the default exit status is 3 if any warnings were
-// reported, or 2 if none were.  Programs can call SetExitStatus to change this.
+// When calling os.Exit(), the default exit status is 3 if any Warn[If][2] calls
+// wrote anything, or 2 if none did.  Programs can call SetExitStatus to change
+// this.  Exception: Die("") exits with status 1 if any warnings were reported,
+// or 0 if no warnings have been issued.
 //
 // This module has a subpackage named cldiag_no_prefix which provides wrappers
 // for the Warn[If][2] and Die[If][2] functions. It is intended to be imported
@@ -143,7 +147,7 @@ func WriteMessage(format string, fmtArgs ...interface{}) {
 	WriteMessage2("", format, fmtArgs...)
 }
 
-// WriteMessage2() is system-dependent
+// WriteMessage2() is system-dependent.
 
 /*--------------------------------- Warnings ---------------------------------*/
 
@@ -181,19 +185,26 @@ func WarnIf2(skipIfNil interface{}, tag, format string, fmtArgs ...interface{}) 
 
 /*------------------------------- Fatal Errors -------------------------------*/
 
-// Die writes a fatal error message and calls os.Exit.  As a special case, it
-// does not write an error message if the format string is empty.
+// Die writes a fatal error message and calls os.Exit.
+//
+// As a special case, if the format string is empty, Die() calls os.Exit()
+// without writing anything, using status code 0 if no Warn[If][2] calls wrote
+// diagnostics, or 1 otherwise.
 func Die(format string, fmtArgs ...interface{}) {
+	if format == "" {
+		if nWarnings > 0 {
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+	//
 	Die2("", format, fmtArgs...)
 }
 
-// Die2 writes a fatal error message (if and only if format is non-empty) and
-// calls os.Exit.  It takes an optional ‘tag’ argument.
+// Die2 writes a fatal error message and calls os.Exit.  It takes an optional
+// ‘tag’ argument.
 func Die2(tag, format string, fmtArgs ...interface{}) {
-	if format != "" {
-		WriteMessage2(tag, format, fmtArgs...)
-	}
-	//
+	WriteMessage2(tag, format, fmtArgs...)
 	os.Exit(dieExitStatus())
 }
 

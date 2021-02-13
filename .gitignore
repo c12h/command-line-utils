@@ -1,6 +1,9 @@
 # Emacs backups
 *~
 
+# My saves
+*.OLD*
+
 # Working notes
 +*.txt
 

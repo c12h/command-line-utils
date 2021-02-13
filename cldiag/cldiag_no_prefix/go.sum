@@ -1,0 +1,3 @@
+github.com/c12h/command-line-utils v0.0.0-20210203042221-dee5f321ae04 h1:xEXkB96cvQ/b2aHJWsM+Ofab/PhQh319qLPIMCVcIc8=
+github.com/c12h/command-line-utils/cldiag v0.0.0-20210203042221-dee5f321ae04 h1:NZT/SKKs7sBM97jWhfM8T9BiiIQJvHJ7kCLPXQ4o0ww=
+github.com/c12h/command-line-utils/cldiag v0.0.0-20210203042221-dee5f321ae04/go.mod h1:9dxmPdRVxPGFQKSYb/5PBSndtgN9hdLedFYKfejIsWA=

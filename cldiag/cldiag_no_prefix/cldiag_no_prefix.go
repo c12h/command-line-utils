@@ -1,5 +1,6 @@
-// Package no_prefix is a subpackage of cldiag which is intended to imported
-// without a prefix, like so:
+// Package cldiag_no_prefix provides the 8 core functions from cldiag.
+//
+// The idea is to import this package without a prefix, like so:
 //	import . "github.com/c12h/command-line-utils/cldiag/cldiag_no_prefix"
 //
 // It provides wrappers for the Die[If][2] and Warn[If][2] functions from
@@ -27,7 +28,7 @@ func WarnIf2(skipIfNil interface{}, tag, format string, fmtArgs ...interface{}) 
 }
 
 func Die(format string, fmtArgs ...interface{}) {
-	cldiag.Die2("", format, fmtArgs...)
+	cldiag.Die(format, fmtArgs...)
 }
 func Die2(tag, format string, fmtArgs ...interface{}) {
 	cldiag.Die2(tag, format, fmtArgs)
